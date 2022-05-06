@@ -1,3 +1,4 @@
+from rest_auth.views import LogoutView
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
 
@@ -10,6 +11,15 @@ class UserRegistrationView(generics.CreateAPIView):
     serializer_class = serializers.RegisterSerializer
 
 
+class CustomLogoutView(LogoutView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
+
+
+class UserDetailView(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = serializers.UserDetailSerializer

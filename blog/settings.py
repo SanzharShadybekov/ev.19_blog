@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     # inst_apps
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
 
     # my_apps
     'blog_api',
@@ -131,3 +133,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Session Authentication
+# Basic Authentication
+# BaseToken Authentication (Token 21324bhdsf123213hjad)
+    # JWT Authentication (Acces Token Refresh Token)
+    # 2fa Authentication
+            # OTP Authentication
+            # TOTP Authentication
+# OAuth2 Authentication (Social WebWorks)
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
