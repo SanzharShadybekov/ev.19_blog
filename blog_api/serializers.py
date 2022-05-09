@@ -1,5 +1,9 @@
+from pyexpat import model
+from statistics import mode
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
+from blog_api.models import Category, Post
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -46,8 +50,23 @@ class UserSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = '__all__' 
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
         fields = '__all__'
 
 
-
-
+class PostSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(
+        source='owner.username'
+    )
+    class Meta:
+        model = Post
+        fields = (
+            'id', 'title', 'body',
+            'owner', 'category', 'preview', 
+        )
+    
