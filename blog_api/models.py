@@ -21,7 +21,7 @@ class Post(models.Model):
                               on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE,
                                  related_name='posts')
-    prewiew = models.ImageField(upload_to='images/', blank=True)
+    preview = models.ImageField(upload_to='images/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
