@@ -13,6 +13,9 @@ from blog_api import serializers
 from blog_api.serializers import PostSerializer
 from blog_api.models import Post, Category
 
+# TODO permissions to post and comments
+# TODO end comments CRUD
+# TODO Add Likes
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -70,11 +73,11 @@ class PostViewSet(ModelViewSet):
 # class PostView(APIView):
 #     def get(self, request):
 #         posts = Post.objects.all()
-#         serializer = PostSerializer(posts, many=True)
+#         serializer = PostSerializer(posts, many=True,)
 #         return Response(serializer.data)
     
 #     def post(self, request):
-#         serializer = PostSerializer(data=request.data)
+#         serializer = PostSerializer(data=request.data, context={'request': request})
 #         if serializer.is_valid():
 #             serializer.save(owner=request.user)
 #             return Response(serializer.data)

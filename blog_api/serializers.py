@@ -1,5 +1,4 @@
-from pyexpat import model
-from statistics import mode
+
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
@@ -69,12 +68,27 @@ class PostSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(
         source='owner.username'
     )
-    images = PostImageSerializer(many=True,read_only=False)
+    images = PostImageSerializer(many=True,read_only=False, required=False)
 
     class Meta:
         model = Post
         fields = (
             'id', 'title', 'body',
-            'owner', 'category', 'preview', 'images'
+            'owner', 'category', 'preview', 'images',
         )
+    
+    def create(self, validated_data):
+        print('validated data: ', validated_data)
+        request = self.context.get('request')
+        print('FILES', request.FILES)
+        images_data = request.FILES
+        created_post = Post.objects.create(**validated_data)
+        print(created_post)
+        print('work', images_data.getlist('images'))
+        images_objects = [PostImages(post=created_post,
+        image=image) for image in images_data.getlist('images')]
+        PostImages.objects.bulk_create(images_objects)
+        return created_post
+
+
     
