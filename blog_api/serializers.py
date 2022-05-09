@@ -3,7 +3,7 @@ from statistics import mode
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from blog_api.models import Category, Post
+from blog_api.models import Category, Post, PostImages
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -59,14 +59,22 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PostImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostImages
+        exclude = ('id',)
+
+
 class PostSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(
         source='owner.username'
     )
+    images = PostImageSerializer(many=True,read_only=False)
+
     class Meta:
         model = Post
         fields = (
             'id', 'title', 'body',
-            'owner', 'category', 'preview', 
+            'owner', 'category', 'preview', 'images'
         )
     

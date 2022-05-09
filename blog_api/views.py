@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 from blog_api import serializers
 from blog_api.serializers import PostSerializer
-from blog_api.models import Post
+from blog_api.models import Post, Category
 
 
 class UserRegistrationView(generics.CreateAPIView):
@@ -56,15 +56,15 @@ class UserDetailView(generics.RetrieveAPIView):
 #     queryset = Post.objects.all()
 #     serializer_class = serializers.PostSerializer
 
-# class PostViewSet(ModelViewSet):
-#     class Meta:
-#         model = Post
-#         fields = '__all__'
-#     queryset = Post.objects.all()
-#     serializer_class = serializers.PostSerializer
+class PostViewSet(ModelViewSet):
+    class Meta:
+        model = Post
+        fields = '__all__'
+    queryset = Post.objects.all()
+    serializer_class = serializers.PostSerializer
 
-#     def perform_create(self, serializer):
-#         serializer.save(owner=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 # class PostView(APIView):
@@ -108,3 +108,6 @@ class UserDetailView(generics.RetrieveAPIView):
 #         return Response("Deleted", status=204)
     
 
+class CategoryView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = serializers.CategorySerializer
