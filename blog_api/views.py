@@ -10,12 +10,12 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 
 from blog_api import serializers
-from blog_api.serializers import PostSerializer
 from blog_api.models import Post, Category
 
 # TODO permissions to post and comments
 # TODO end comments CRUD
 # TODO Add Likes
+# TODO Filter/Search
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
