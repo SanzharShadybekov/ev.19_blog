@@ -9,13 +9,16 @@ from rest_framework.response import Response
 
 from django.contrib.auth.models import User
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+
 from blog_api import serializers
 from blog_api.models import Post, Category
+from blog_api.permissions import IsAuthor
 
 # TODO permissions to post and comments
 # TODO end comments CRUD
 # TODO Add Likes
-# TODO Filter/Search
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -65,9 +68,27 @@ class PostViewSet(ModelViewSet):
         fields = '__all__'
     queryset = Post.objects.all()
     serializer_class = serializers.PostSerializer
+    filter_backends = (DjangoFilterBackend, SearchFilter)
+    filterset_fields = ('category', 'owner')
+    search_fields = ('title',)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+    
+    def get_permissions(self):
+        #Создавать посты может залогиненный пользователь
+        if self.action in ('create',):
+            return [permissions.IsAuthenticated(),]
+        # изменять и удалять может только автор
+        elif self.action in ('update', 'partial_update','destroy',):
+            return [IsAuthor(),]
+        # просматривать могут все
+        else:
+            return [permissions.AllowAny(),]
+
+
+
+
 
 
 # class PostView(APIView):

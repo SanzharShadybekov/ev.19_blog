@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'drf_yasg',
+    'django_filters',
+
 
     # my_apps
     'blog_api',
